@@ -10,8 +10,8 @@
 #include "server.h"
 
 Server::Server(const std::string& address, 
-	const int port,
-	const int thread_pool_size):
+	const int& port,
+	const int& thread_pool_size):
 	thread_pool_(thread_pool_size){
 	DLOG(INFO) << "Create socket";
 	CreateSocket();

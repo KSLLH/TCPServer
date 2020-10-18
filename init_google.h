@@ -3,4 +3,4 @@
 
 void InitGoogle(int * argc, char * * * argv);
 
-#endif INIT_GOOGLE_H
+#endif

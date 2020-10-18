@@ -5,8 +5,8 @@
 #include "server.h"
 
 DEFINE_string(address, "", "IP address of server");
-DEFINE_int(port, 2222, "Port number the server listens on");
-DEFINE_int(thread_size, 100, "Size of thread pool");
+DEFINE_int32(port, 2222, "Port number the server listens on");
+DEFINE_int32(thread_size, 100, "Size of thread pool");
 
 static ServiceManager& ServiceManager::GetInstance(){
 	static ServiceManager instance;
@@ -14,9 +14,9 @@ static ServiceManager& ServiceManager::GetInstance(){
 }
 
 void ServiceManager::Start(){
-	DLOG(info) << "Instantiate server";
+	DLOG(INFO) << "Instantiate server";
 	Server server {FLAGS_address, FLAGS_port, FLAGS_thread_size};
-	DLOG(info) << "Run server";
+	DLOG(INFO) << "Run server";
 	server.Run();	
 }
 

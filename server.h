@@ -10,8 +10,8 @@
 class Server{
 public:
 	Server(const std::string& address, 
-		const int port,
-		const int thread_pool_size);
+		const int& port,
+		const int& thread_pool_size);
 	
 	void Run();
 

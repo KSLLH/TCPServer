@@ -18,7 +18,7 @@ inline void Daemonize(){
 	}
 	setsid();
 	
-	in fd = open("/dev/null", O_RDWR, 0);
+	int fd = open("/dev/null", O_RDWR, 0);
 	if(-1 != fd){
 		dup2(fd, STDIN_FILENO);
 		dup2(fd, STDOUT_FILENO);
@@ -40,7 +40,7 @@ int main(int argc, char* argv[]){
 	InitGoogle(&argc, & argv);	
 
 	// Handle signal
-	DLOG(INNFO) << "Handle signals.";
+	DLOG(INFO) << "Handle signals.";
 	InitSignal();
 
 	if(FLAGS_daemon){
@@ -49,5 +49,5 @@ int main(int argc, char* argv[]){
 	}
 
 	DLOG(INFO) << "Start Control";
-	Control::GetInstance.Start();
+	Control::GetInstance().Start();
 }

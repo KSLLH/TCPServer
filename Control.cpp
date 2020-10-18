@@ -10,11 +10,11 @@ static Control& Control::GetInstance(){
 
 void Control::Start(){
 	DLOG(INFO) << "Start ServiceManager";
-	ServiceManager::GetInstance::Start();
+	ServiceManager::GetInstance.Start();
 }
 
 void Control::Stop(){
 	//pass
 }
 
-Control::Control()exit_:{false}{}
+Control::Control(){}
