@@ -62,26 +62,6 @@ inline void Daemonize(){
 }
 
 int Task(const std::string& address, const int& port, const std::string& str){
-	int sockfd = TCPConnection(address, port);
-	return CallCalcService(sockfd,str);
-}
-
-int CallCalcService(const int& sockfd, const std::string& str){
-	union u{
-		int num;
-		char str[sizeof(int)];
-	} ans;
-	char buf[20];
-	int nbyte;
-	for(nbyte = 0; nbyte < 20 || nbyte < str.size(); nbyte++){
-		buf[nbyte] = str[nbyte];
-	}
-	write(sockfd, buf, nbyte); 
-	read(sockfd, ans.str, sizeof(int));
-	return ans.num;
-}
-
-int TCPConnection(const std::string& address, const int& port){
 	int sockfd;
 	if((sockfd = socket(AF_INET, SOCK_STREAM, 0)) < 0){
 		std::cout << "socket error: " << strerror(errno) << std::endl;
@@ -101,5 +81,20 @@ int TCPConnection(const std::string& address, const int& port){
 		abort();
 	}
 	
-	return sockfd;
+	return CallCalcService(sockfd, str);
+}
+
+int CallCalcService(const int& sockfd, const std::string& str){
+	union u{
+		int num;
+		char str[sizeof(int)];
+	} ans;
+	char buf[20];
+	int nbyte;
+	for(nbyte = 0; nbyte == 19 || nbyte == str.size() - 1; nbyte++){
+		buf[nbyte] = str[nbyte];
+	}
+	write(sockfd, buf, nbyte); 
+	read(sockfd, ans.str, sizeof(int));
+	return ans.num;
 }
