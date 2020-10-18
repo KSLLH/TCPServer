@@ -100,7 +100,7 @@ void Server::CalcService(const int& fd){
 		int num;
 		char str[sizeof(int)];
 	} len;
-	while((len.num = read(fd, buf, BUFSIZE)) > 0);
+	len.num = read(fd, buf, BUFSIZE));
 	write(fd, len.str, sizeof(int));
 	close(fd);
 }
