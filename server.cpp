@@ -71,7 +71,7 @@ void Server::Listen(){
 
  void Server::AcceptHandler(const int& epfd){
 	struct epoll_event ev;
-	ev.events = EPOLLIN|EPOLLONESHOT;
+	ev.events = EPOLLIN;
 	while (true){
 		int connfd;
 		if((connfd = accept(listenfd, (struct sockaddr*) NULL, NULL)) < 0){
@@ -87,7 +87,8 @@ void Server::EventHandler(const int& epfd){
 	while(true){
 		epoll_wait(epfd, events, MAXEVENTS, TIMEOUT);
 		for(auto& ev : events){
-			thread_pool_.enqueue(std::bind(&Server::CalcService, this, ev.data.fd));
+			int sockfd = ev.data.fd;
+			thread_pool_.enqueue(std::bind(&Server::CalcService, this, sockfd));
 		}
 	}
 }
