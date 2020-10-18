@@ -37,13 +37,11 @@ int main(int argc, char* argv[]){
 		Daemonize();
 	}
 	
-	for(int j = FLAGS_workers; j > 0; j = j >> 1){
-		fork();
-	}
+	//ThreadPool thread_pool {FLAGS_thread_size};
+	//auto res = thread_pool.enqueue(Task, FLAGS_address, FLAGS_port, "test text");
 
-	ThreadPool thread_pool {FLAGS_thread_size};
-	auto res = thread_pool.enqueue(Task, FLAGS_address, FLAGS_port, "test text");
-	std::cout << res.get() << std::endl;
+	
+	std::cout << Task(FLAGS_address, FLAGS_port, "test text") << std::endl;
 }
 
 inline void Daemonize(){
