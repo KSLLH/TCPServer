@@ -71,7 +71,7 @@ int TCPConnection(const std::string& address, const int& port){
 	//DLOG(INFO) << "Connect to server";
 	if(connect(sockfd, (struct sockaddr*)&sock_addr, sizeof(sock_addr)) < 0){
 		//LOG(ERROR) << "connect error: " << strerror(errno);
-		std::cout << << "connect error: " << strerror(errno) << std::endl;
+		std::cout << "connect error: " << strerror(errno) << std::endl;
 		abort();
 	}
 	std::cout << "connect returned" << std::endl;
@@ -90,7 +90,7 @@ int CallCalcService(const int& sockfd, const std::string& str){
 		buf[nbyte] = str[nbyte];
 	}
 	//DLOG(INFO) << "Write " << buf <<  " to socket";
-	std::cout << << "Write " << buf <<  " to socket" << std::endl;
+	std::cout << "Write " << buf <<  " to socket" << std::endl;
 	write(sockfd, buf, nbyte);
 	std::cout << "write returned" << std::endl;
 	//DLOG(INFO) << "Read from socket";
