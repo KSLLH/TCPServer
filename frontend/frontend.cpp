@@ -35,7 +35,7 @@ int main(int argc, char* argv[]){
 		fork();
 	}
 
-	TreadPool thread_pool {FLAGS_thread_size};
+	ThreadPool thread_pool {FLAGS_thread_size};
 	auto res = thread_pool.enqueue(Task, FLAGS_address, FLAGS_port, "test text");
 	std::cout << res.get() << std::endl;
 }
@@ -57,12 +57,12 @@ inline void Daemonize(){
 	return;
 }
 
-int Task(const string& address, const int& port, const string& str){
+int Task(const std::string& address, const int& port, const std::string& str){
 	int sockfd = TCPConnection(address, port);
 	return CallCalcService(sockfd,str);
 }
 
-int TCPConnection(const string& address, const int& port){
+int TCPConnection(const std::string& address, const int& port){
 	int sockfd = socket(AF_INET, SOCK_STREAM, 0);
 
 	struct sockaddr_in sock_addr;
@@ -73,7 +73,7 @@ int TCPConnection(const string& address, const int& port){
 	return sockfd;
 }
 
-int CallCalcService(const int& sockfd, const string& str){
+int CallCalcService(const int& sockfd, const std::string& str){
 	int ans;
 	char buf[20];
 	int nbyte;
