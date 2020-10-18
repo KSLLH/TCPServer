@@ -1,7 +1,7 @@
 #include <glog/logging.h>
 
 #include "control.h"
-#include "server.h"
+#include "service_manager.h"
 
 static Control& Control::GetInstance(){
 	static Control instance;
@@ -9,12 +9,12 @@ static Control& Control::GetInstance(){
 }
 
 void Control::Start(){
-	Server server {args};
-	server.Run();
+	DLOG(INFO) << "Start ServiceManager";
+	ServiceManager::GetInstance::Start();
 }
 
 void Control::Stop(){
 	//pass
 }
 
-Control::Control()exit:{false}{}
+Control::Control()exit_:{false}{}
