@@ -9,7 +9,7 @@
 
 #include "server.h"
 
-Server::Server(const string& address, 
+Server::Server(const std::string& address, 
 	const int port,
 	const int thread_pool_size):
 	thread_pool_(thread_pool_size){
@@ -36,7 +36,7 @@ void Server::Run(){
 void Server::CreateSocket(){
 	listenfd = socket(AF_INET, SOCK_STREAM, 0);
 	if(listenfd < 0){
-		DLOG(INFO) << "socket error: " << strerr(errno);
+		DLOG(INFO) << "socket error: " << strerror(errno);
 		abort();
 	}
 }
@@ -52,30 +52,30 @@ void Server::Bind(const string& address, const int port){
 	else{
 		const char* ip = address.c_str();
 		if(inet_pton(AF_INET, ip, &sock_addr.sin_addr)  <= 0){
-			DLOG(INFO) << "inet_pton error: " << stderr(errno);
+			DLOG(INFO) << "inet_pton error: " << strerror(errno);
 			abort();
 		}
 	}
 	if(bind(listenfd, (struct sockaddr*) &sock_addr, sizeof(sock_addr)) < 0){
-		DLOG(INFO) << "bind socket error: " << stderr(errno);
+		DLOG(INFO) << "bind socket error: " << strerror(errno);
 		abort();
 	}
 }
 
 void Server::Listen(){
 	if(listen(listenfd, LISTENQ) < 0){
-		DLOG(INFO) << "listen error: " << stderr(errno);
+		DLOG(INFO) << "listen error: " << strerror(errno);
 		abort();
 	}
 }
 
-void Server::AcceptHandler(const int epfd){
+static void Server::AcceptHandler(const int epfd){
 	struct epoll_event ev;
 	ev.events = EPOLLIN|EPOLLONESHOT;
 	while (true){
 		int connfd;
 		if((connfd = accept(listenfd, (struct sockaddr*) NULL, NULL)) < 0){
-			DLOG(INFO) << "accept error: " << stderr(errno);
+			DLOG(INFO) << "accept error: " << strerror(errno);
 			abort();
 		}
 		ev.data.fd = connfd;
