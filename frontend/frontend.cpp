@@ -32,7 +32,7 @@ int main(int argc, char* argv[]){
 
 	//DLOG(INFO) << "Create thread pool.";
 	ThreadPool thread_pool(2);
-
+	std::cout << "Thread pool created" << std::endl;
 	//DLOG(INFO) << "Sending request and receive response";
 	std::cout << Task("10.128.134.184", 2222, "TEST TEXT") << std::endl;
 	return 0;
@@ -41,6 +41,7 @@ int main(int argc, char* argv[]){
 int Task(const std::string& address, const int& port, const std::string& str){
 	//DLOG(INFO) << "Start TCPConnection";
 	int sockfd = TCPConnection(address, port);
+	std::cout << "TCPConnection returned" << std::endl;
 	//DLOG(INFO) << "Start CalCalcService";
 	return CallCalcService(sockfd, str);
 }
@@ -50,9 +51,10 @@ int TCPConnection(const std::string& address, const int& port){
 	//DLOG(INFO) << "Create socket";
 	if((sockfd = socket(AF_INET, SOCK_STREAM, 0)) < 0){
 		//LOG(ERROR) << "socket error: " << strerror(errno);
+		std::cout << "socket error: " << strerror(errno) << std::endl;
 		abort();
 	}
-
+	std::cout << "socket returned" << std::endl;
 	//DLOG(INFO) << "Define server socket address";
 	struct sockaddr_in sock_addr;
 	bzero(&sock_addr, sizeof(sock_addr));
@@ -61,15 +63,18 @@ int TCPConnection(const std::string& address, const int& port){
 	const char* ip = address.c_str();
 	if(inet_pton(AF_INET, ip, &sock_addr.sin_addr) <= 0){
 		//LOG(ERROR) << "inet_pton error: " << strerror(errno);
+		std::cout << "inet_pton error: " << strerror(errno) << std::endl;
 		abort();
 	}
 
+	std::cout << "inet_pton returned" << std::endl;
 	//DLOG(INFO) << "Connect to server";
 	if(connect(sockfd, (struct sockaddr*)&sock_addr, sizeof(sock_addr)) < 0){
 		//LOG(ERROR) << "connect error: " << strerror(errno);
+		std::cout << << "connect error: " << strerror(errno) << std::endl;
 		abort();
 	}
-
+	std::cout << "connect returned" << std::endl;
 	return sockfd;
 }
 
@@ -85,9 +90,11 @@ int CallCalcService(const int& sockfd, const std::string& str){
 		buf[nbyte] = str[nbyte];
 	}
 	//DLOG(INFO) << "Write " << buf <<  " to socket";
+	std::cout << << "Write " << buf <<  " to socket" << std::endl;
 	write(sockfd, buf, nbyte);
-	
+	std::cout << "write returned" << std::endl;
 	//DLOG(INFO) << "Read from socket";
 	read(sockfd, ans.str, sizeof(int));
+	std::cout << "read returned" << std::endl;
 	return ans.num;
 }
