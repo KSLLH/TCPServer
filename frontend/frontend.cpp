@@ -67,15 +67,18 @@ int Task(const std::string& address, const int& port, const std::string& str){
 }
 
 int CallCalcService(const int& sockfd, const std::string& str){
-	int ans;
+	union u{
+		int num;
+		char str[sizeof(int)];
+	} ans;
 	char buf[20];
 	int nbyte;
 	for(nbyte = 0; nbyte < 20 || nbyte < str.size(); nbyte++){
 		buf[nbyte] = str[nbyte];
 	}
 	write(sockfd, buf, nbyte); 
-	read(sockfd, (char*)&ans, sizeof(int));
-	return ans;
+	read(sockfd, ans.str, sizeof(int));
+	return ans.num;
 }
 
 int TCPConnection(const std::string& address, const int& port){

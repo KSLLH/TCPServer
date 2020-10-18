@@ -96,9 +96,12 @@ void Server::EventHandler(const int& epfd){
 void Server::CalcService(const int& fd){
 	const int BUFSIZE {20};
 	char buf[BUFSIZE];
-	int len {0};
-	while((len = read(fd, buf, BUFSIZE)) > 0);
-	write(fd, (char*)&len, sizeof(int));
+	union u{
+		int num;
+		char str[sizeof(int)];
+	} len;
+	while((len.num = read(fd, buf, BUFSIZE)) > 0);
+	write(fd, (len.str, sizeof(int));
 	close(fd);
 }
 
