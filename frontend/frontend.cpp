@@ -32,10 +32,10 @@ int main(int argc, char* argv[]){
 	DLOG(INFO) << "Google Initialized.";
 
 	DLOG(INFO) << "Create thread pool.";
-	ThreadPool thread_pool(FLAGS_thread_size);
+	//ThreadPool thread_pool(FLAGS_thread_size);
 
 	DLOG(INFO) << "Sending request and receive response";
-	std::cout << Task(FLAGS_address, FLAGS_port, "TEST TEXT");
+	//std::cout << Task(FLAGS_address, FLAGS_port, "TEST TEXT");
 	return 0;
 }
 
