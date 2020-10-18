@@ -3,7 +3,7 @@
 #include "control.h"
 #include "service_manager.h"
 
-static Control& Control::GetInstance(){
+Control& Control::GetInstance(){
 	static Control instance;
 	return instance;
 }
