@@ -1,6 +1,8 @@
 #ifndef CONTROL_H
 #define CONTROL_H
 
+#include "control.h"
+
 class Control{
 public:
 	static Control& GetInstance();
