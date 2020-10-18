@@ -18,7 +18,6 @@
 
 DEFINE_string(address, "10.128.134.184", "IP address of server");
 DEFINE_int32(port, 2222, "port of serever");
-DEFINE_bool(daemon, false, "True if run as a daemon process.");
 DEFINE_int32(workers, 8, "Number of processes");
 DEFINE_int32(thread_size, 100, "Number of threads per process");
 
@@ -32,7 +31,7 @@ int main(int argc, char* argv[]){
 	DLOG(INFO) << "Google Initialized.";
 
 	DLOG(INFO) << "Create thread pool.";
-	//ThreadPool thread_pool(FLAGS_thread_size);
+	ThreadPool thread_pool(2);
 
 	DLOG(INFO) << "Sending request and receive response";
 	//std::cout << Task(FLAGS_address, FLAGS_port, "TEST TEXT");
