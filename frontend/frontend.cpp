@@ -22,7 +22,6 @@ DEFINE_bool(daemon, false, "True if run as a daemon process.");
 DEFINE_int32(workers, 8, "Number of processes");
 DEFINE_int32(thread_size, 100, "Number of threads per process");
 
-inline void Daemonize();
 int Task(const std::string& address, const int& port, const std::string& str);
 int TCPConnection(const std::string& address, const int& port);
 int CallCalcService(const int& sockfd, const std::string& str);
@@ -32,39 +31,16 @@ int main(int argc, char* argv[]){
 	InitGoogle(&argc, & argv);	
 	DLOG(INFO) << "glags and glog Initialized";
 
-	if(FLAGS_daemon){
-		DLOG(INFO) << "Daemonize process.";
-		Daemonize();
-	}
-
 	DLOG(INFO) << "Create thread pool";
 	ThreadPool thread_pool(FLAGS_thread_size);
 	//for(;;){
 	//	thread_pool.enqueue(Task, FLAGS_address, FLAGS_port, "test text")
 	//}
 
-
 	DLOG(INFO) << "Start Task";
 	std::cout << Task(FLAGS_address, FLAGS_port, "test text") << std::endl;
 	DLOG(INFO) << "Task Done";
 	return 0;
-}
-
-inline void Daemonize(){
-	if(0 != fork()){
-		exit(0);
-	}
-	setsid();
-	int fd = open("/dev/null", O_RDWR, 0);
-	if(-1 != fd){
-		dup2(fd, STDIN_FILENO);
-		dup2(fd, STDOUT_FILENO);
-		dup2(fd, STDERR_FILENO);
-		if(fd > STDERR_FILENO){
-			close(fd);
-		}
-	}
-	return;
 }
 
 int Task(const std::string& address, const int& port, const std::string& str){
