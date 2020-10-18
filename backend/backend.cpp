@@ -4,7 +4,7 @@
 #include <gflags/gflags.h>
 #include <glog/logging.h>
 
-#include "init_google.h"
+#include "util/init_google.h"
 #include "control.h"
 
 inline void InitSignal(){

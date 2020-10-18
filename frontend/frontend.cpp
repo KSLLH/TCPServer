@@ -19,7 +19,7 @@ DEFINE_string(address, "10.128.134.184", "IP address of server");
 DEFINE_int32(port, 2222, "port of serever");
 DEFINE_bool(daemon, false, "True if run as a daemon process.");
 DEFINE_int32(workers, 8, "Number of processes");
-DEFINE_int64(thread_size, 100, "Number of threads per process");
+DEFINE_int32(thread_size, 100, "Number of threads per process");
 
 inline void Daemonize();
 int Task(const std::string& address, const int& port, const std::string& str);
