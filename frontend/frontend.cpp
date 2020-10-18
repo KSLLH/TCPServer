@@ -28,8 +28,8 @@ int CallCalcService(const int& sockfd, const std::string& str);
 
 
 int main(int argc, char* argv[]){
-	InitGoogle(&argc, & argv);	
-	DLOG(INFO) << "glags and glog Initialized";
+	InitGoogle(&argc, &argv);	
+	//DLOG(INFO) << "glags and glog Initialized";
 
 	DLOG(INFO) << "Create thread pool";
 	ThreadPool thread_pool(FLAGS_thread_size);
