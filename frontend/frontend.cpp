@@ -30,7 +30,7 @@ int CallCalcService(const int& sockfd, const std::string& str);
 
 int main(int argc, char* argv[]){
 	InitGoogle(&argc, & argv);	
-	DLOG(INFO) << "Initialize glags and glog.";
+	DLOG(INFO) << "glags and glog Initialized";
 
 	if(FLAGS_daemon){
 		DLOG(INFO) << "Daemonize process.";
@@ -38,10 +38,15 @@ int main(int argc, char* argv[]){
 	}
 	
 	ThreadPool thread_pool {FLAGS_thread_size};
-	std::cout << Task(FLAGS_address, FLAGS_port, "test text") << std::endl;
 	//for(;;){
 	//	thread_pool.enqueue(Task, FLAGS_address, FLAGS_port, "test text")
 	//}
+
+
+	DLOG(INFO) << "Start Task";
+	std::cout << Task(FLAGS_address, FLAGS_port, "test text") << std::endl;
+	DLOG(INFO) << "Task Done";
+	return 0;
 }
 
 inline void Daemonize(){
@@ -62,29 +67,34 @@ inline void Daemonize(){
 }
 
 int Task(const std::string& address, const int& port, const std::string& str){
+	DLOG(INFO) << "Start TCPConnection";
 	int sockfd = TCPConnection(address, port);
+	DLOG(INFO) << "Start CalCalcService";
 	return CallCalcService(sockfd, str);
 }
 
 int TCPConnection(const std::string & address, const int& port){
 	int sockfd;
+	DLOG(INFO) << "Create socket";
 	if((sockfd = socket(AF_INET, SOCK_STREAM, 0)) < 0){
-		std::cout << "socket error: " << strerror(errno) << std::endl;
+		LOG(ERROR) << "socket error: " << strerror(errno);
 		abort();
 	}
 
+	DLOG(INFO) << "Define server socket address";
 	struct sockaddr_in sock_addr;
 	bzero(&sock_addr, sizeof(sock_addr));
 	sock_addr.sin_family = AF_INET;
 	sock_addr.sin_port = htons(port);
 	const char* ip = address.c_str();
 	if(inet_pton(AF_INET, ip, &sock_addr.sin_addr) <= 0){
-		std::cout << "inet_pton error: " << strerror(errno);
+		LOG(ERROR) << "inet_pton error: " << strerror(errno);
 		abort();
 	}
-	
+
+	DLOG(INFO) << "Connect to server";
 	if(connect(sockfd, (struct sockaddr*)&sock_addr, sizeof(sock_addr)) < 0){
-		std::cout << "connect error: " << strerror(errno);
+		LOG(ERROR) << "connect error: " << strerror(errno);
 		abort();
 	}
 
@@ -102,7 +112,10 @@ int CallCalcService(const int& sockfd, const std::string& str){
 	for(nbyte = 0; nbyte == 19 || nbyte == str.size() - 1; nbyte++){
 		buf[nbyte] = str[nbyte];
 	}
-	write(sockfd, buf, nbyte); 
+	DLOG(INFO) << "Write " << buf <<  " to socket";
+	write(sockfd, buf, nbyte);
+	
+	DLOG(INFO) << "Read from socket";
 	read(sockfd, ans.str, sizeof(int));
 	return ans.num;
 }
