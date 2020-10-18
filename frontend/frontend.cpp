@@ -34,7 +34,7 @@ int main(int argc, char* argv[]){
 	ThreadPool thread_pool(2);
 
 	DLOG(INFO) << "Sending request and receive response";
-	std::cout << Task(FLAGS_address, FLAGS_port, "TEST TEXT");
+	std::cout << Task("10.128.134.184", 2222, "TEST TEXT");
 	return 0;
 }
 
