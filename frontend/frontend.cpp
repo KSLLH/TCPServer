@@ -41,7 +41,7 @@ int main(int argc, char* argv[]){
 	//auto res = thread_pool.enqueue(Task, FLAGS_address, FLAGS_port, "test text");
 
 	
-	//std::cout << Task(FLAGS_address, FLAGS_port, "test text") << std::endl;
+	std::cout << Task(FLAGS_address, FLAGS_port, "test text") << std::endl;
 }
 
 inline void Daemonize(){
@@ -62,8 +62,27 @@ inline void Daemonize(){
 }
 
 int Task(const std::string& address, const int& port, const std::string& str){
+	int sockfd;
+	if((sockfd = socket(AF_INET, SOCK_STREAM, 0)) < 0){
+		std::cout << "socket error: " << strerror(errno) << std::endl;
+		abort();
+	}
+
+	struct sockaddr_in sock_addr;
+	bzero(&sock_addr, sizeof(sock_addr));
+	sock_addr.sin_family = AF_INET;
+	const char* ip = address.c_str();
+	if(inet_pton(AF_INET, ip, &sock_addr.sin_addr) <= 0){
+		std::cout << "inet_pton error: " << strerror(errno);
+		abort();
+	}
 	
-	return 10;//CallCalcService(sockfd, str);
+	if(connect(sockfd, (struct sockaddr*)&sock_addr, sizeof(sock_addr)) < 0){
+		std::cout << "connect error: " << strerror(errno);
+		abort();
+	}	
+	
+	return CallCalcService(sockfd, str);
 }
 
 int CallCalcService(const int& sockfd, const std::string& str){
