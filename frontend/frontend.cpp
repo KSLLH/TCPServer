@@ -37,7 +37,7 @@ int main(int argc, char* argv[]){
 		Daemonize();
 	}
 	
-	ThreadPool thread_pool {FLAGS_thread_size};
+	ThreadPool thread_pool(FLAGS_thread_size);
 	//for(;;){
 	//	thread_pool.enqueue(Task, FLAGS_address, FLAGS_port, "test text")
 	//}
