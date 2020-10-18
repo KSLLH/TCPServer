@@ -17,9 +17,9 @@ DEFINE_int32(workers, 8, "Number of processes");
 DEFINE_int32(thread_size, 100, "Number of threads per process");
 
 inline void Daemonize();
-int Task(const string& address, const int& port, const string& str);
-int TCPConnection(const string& address, const int& port);
-int CallCalcService(const int& sockfd, const string& str);
+int Task(const std::string& address, const int& port, const std::string& str);
+int TCPConnection(const std::string& address, const int& port);
+int CallCalcService(const int& sockfd, const std::string& str);
 
 
 int main(int argc, char* argv[]){
