@@ -28,6 +28,7 @@ int CallCalcService(const int& sockfd, const std::string& str);
 
 
 int main(int argc, char* argv[]){
+	InitGoogle(&argc, &argv);
 	DLOG(INFO) << "TEST TEXT1";
 	DLOG(INFO) << "TEST TEXT2";
 	return 0;
