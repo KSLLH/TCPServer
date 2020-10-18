@@ -27,7 +27,7 @@ void Server::Run(){
 	int epfd = epoll_create(SIZE);
 
 	DLOG(INFO) << "Handle accept";
-	std::thread acceptor(Server::AcceptHandler, this, epfd);
+	std::thread acceptor(std::bind(Server::AcceptHandler, this, epfd));
 
 	DLOG(INFO) << "Handle vent";
 	EventHandler(epfd);
