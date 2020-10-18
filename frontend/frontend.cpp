@@ -5,6 +5,7 @@
 #include <sys/socket.h>
 #include <netinet/in.h>
 #include <string.h>
+#include <errno.h>
 
 #include <gflags/gflags.h>
 #include <glog/logging.h>
@@ -67,17 +68,6 @@ int Task(const std::string& address, const int& port, const std::string& str){
 	return CallCalcService(sockfd,str);
 }
 
-int TCPConnection(const std::string& address, const int& port){
-	int sockfd = socket(AF_INET, SOCK_STREAM, 0);
-
-	struct sockaddr_in sock_addr;
-	bzero(&sock_addr, sizeof(sock_addr));
-	sock_addr.sin_family = AF_INET;
-	inet_pton(AF_INET, address.c_str(), &sock_addr.sin_addr);
-	connect(sockfd, (struct sockaddr*)&sock_addr, sizeof(sock_addr));
-	return sockfd;
-}
-
 int CallCalcService(const int& sockfd, const std::string& str){
 	int ans;
 	char buf[20];
@@ -85,8 +75,30 @@ int CallCalcService(const int& sockfd, const std::string& str){
 	for(nbyte = 0; nbyte < 20 || nbyte < str.size(); nbyte++){
 		buf[nbyte] = str[nbyte];
 	}
-	write(sockfd, buf, nbyte);
+	write(sockfd, buf, nbyte); 
 	read(sockfd, (char*)&ans, sizeof(int));
 	return ans;
 }
 
+int TCPConnection(const std::string& address, const int& port){
+	int sockfd;
+	if((sockfd = = socket(AF_INET, SOCK_STREAM, 0)) < 0){
+		std::cout << "socket error: " << strerror(errno) << std::endl;
+		abort();
+	}
+
+	struct sockaddr_in sock_addr;
+	bzero(&sock_addr, sizeof(sock_addr));
+	sock_addr.sin_family = AF_INET;
+	if(inet_pton(AF_INET, address.c_str(), &sock_addr.sin_addr) <= 0){
+		std::cout << "inet_pton error: " << strerror(errno);
+		abort();
+	}
+	
+	if(connect(sockfd, (struct sockaddr*)&sock_addr, sizeof(sock_addr)) < 0){
+		std::cout << "connect error: " << strerror(errno);
+		abort();
+	}
+	
+	return sockfd;
+}
