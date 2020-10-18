@@ -81,7 +81,7 @@ int Task(const std::string& address, const int& port, const std::string& str){
 		abort();
 	}
 	
-	return CallCalcService(sockfd, str);
+	return 10;//CallCalcService(sockfd, str);
 }
 
 int CallCalcService(const int& sockfd, const std::string& str){
