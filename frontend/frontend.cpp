@@ -4,6 +4,9 @@
 #include <gflags/gflags.h>
 #include <glog/logging.h>
 
+#include <iostream>
+#include <string>
+
 #include "util/init_google.h"
 #include "util/thread_pool.h"
 
@@ -12,6 +15,12 @@ DEFINE_int32(port, 2222, "port of serever");
 DEFINE_bool(daemon, false, "True if run as a daemon process.");
 DEFINE_int32(workers, 8, "Number of processes");
 DEFINE_int32(thread_size, 100, "Number of threads per process");
+
+inline void Daemonize();
+int Task(const string& address, const int& port, const string& str);
+int TCPConnection(const string& address, const int& port);
+int CallCalcService(const int& sockfd, const string& str);
+
 
 int main(int argc, char* argv[]){
 	InitGoogle(&argc, & argv);	
@@ -27,9 +36,8 @@ int main(int argc, char* argv[]){
 	}
 
 	TreadPool thread_pool {FLAGS_thread_size};
-	for(;;) {
-		thread_pool.enqueue(CallCalcService);
-	}
+	auto res = thread_pool.enqueue(Task, FLAGS_address, FLAGS_port, "test text");
+	std::cout << res.get() << std::endl;
 }
 
 inline void Daemonize(){
