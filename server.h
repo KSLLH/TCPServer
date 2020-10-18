@@ -9,7 +9,7 @@
 
 class Server{
 public:
-	Server(const string& address, 
+	Server(const std::string& address, 
 		const int port,
 		const int thread_pool_size);
 	
@@ -18,7 +18,7 @@ public:
 private:
 	void CreateSocket();
 
-	void Bind(const string& address, const int port);
+	void Bind(const std::string& address, const int port);
 
 	void Listen();
 
@@ -29,11 +29,12 @@ private:
 	void CalcService(const int fd);
 
 private:
-	const int SIZE {1000};
-	const int LISTENQ {50};
+	static const int SIZE {1000};
+	static const int LISTENQ {50};
+	static const int MAXEVENTS {1000};
+	static const int TIMEOUT {10};
+
 	int listenfd;
-	const int MAXEVENTS {1000};
-	const int TIMEOUT {10};
 	struct epoll_event events[MAXEVENTS];
 	ThreadPool thread_pool_;
 
