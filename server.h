@@ -22,7 +22,7 @@ private:
 
 	void Listen();
 
-	static void AcceptHandler(const int epfd);
+	void AcceptHandler(const int epfd);
 
 	void EventHandler(const int epfd);
 

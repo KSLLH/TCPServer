@@ -27,7 +27,7 @@ void Server::Run(){
 	int epfd = epoll_create(SIZE);
 
 	DLOG(INFO) << "Handle accept";
-	std::thread acceptor(Server::AcceptHandler, epfd);
+	std::thread acceptor(Server::AcceptHandler, this, epfd);
 
 	DLOG(INFO) << "Handle vent";
 	EventHandler(epfd);
@@ -69,7 +69,7 @@ void Server::Listen(){
 	}
 }
 
-static void Server::AcceptHandler(const int epfd){
+ void Server::AcceptHandler(const int epfd){
 	struct epoll_event ev;
 	ev.events = EPOLLIN|EPOLLONESHOT;
 	while (true){
