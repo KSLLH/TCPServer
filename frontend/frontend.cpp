@@ -41,7 +41,7 @@ int main(int argc, char* argv[]){
 	//auto res = thread_pool.enqueue(Task, FLAGS_address, FLAGS_port, "test text");
 
 	
-	std::cout << Task(FLAGS_address, FLAGS_port, "test text") << std::endl;
+	//std::cout << Task(FLAGS_address, FLAGS_port, "test text") << std::endl;
 }
 
 inline void Daemonize(){
