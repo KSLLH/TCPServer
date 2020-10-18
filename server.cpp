@@ -69,7 +69,7 @@ void Server::Listen(){
 	}
 }
 
- void Server::AcceptHandler(const int epfd){
+ void Server::AcceptHandler(const int& epfd){
 	struct epoll_event ev;
 	ev.events = EPOLLIN|EPOLLONESHOT;
 	while (true){
@@ -83,7 +83,7 @@ void Server::Listen(){
 	}
 }
 
-void Server::EventHandler(const int epfd){	
+void Server::EventHandler(const int& epfd){	
 	while(true){
 		epoll_wait(epfd, events, MAXEVENTS, TIMEOUT);
 		for(auto& ev : events){
@@ -92,7 +92,7 @@ void Server::EventHandler(const int epfd){
 	}
 }
 
-void Server::CalcService(const int fd){
+void Server::CalcService(const int& fd){
 	const BUFSIZE {20};
 	char buf[BUFSIZE];
 	int len {0};

@@ -22,11 +22,11 @@ private:
 
 	void Listen();
 
-	void AcceptHandler(const int epfd);
+	void AcceptHandler(const int& epfd);
 
-	void EventHandler(const int epfd);
+	void EventHandler(const int& epfd);
 
-	void CalcService(const int fd);
+	void CalcService(const int& fd);
 
 private:
 	static const int SIZE {1000};
