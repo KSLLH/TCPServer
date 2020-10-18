@@ -87,7 +87,7 @@ int CallCalcService(const int& sockfd, const std::string& str){
 	std::cout << "string to write: " << str << std::endl;
 	bzero(buf, sizeof(buf));
 	int nbyte;
-	for(nbyte = 0; nbyte == 19 || nbyte == str.size() - 1; nbyte++){
+	for(nbyte = 0; nbyte < 20 && nbyte < str.size(); nbyte++){
 		buf[nbyte] = str[nbyte];
 	}
 	//DLOG(INFO) << "Write " << buf <<  " to socket";
