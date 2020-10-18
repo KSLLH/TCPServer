@@ -84,13 +84,14 @@ int CallCalcService(const int& sockfd, const std::string& str){
 		char str[sizeof(int)];
 	} ans;
 	char buf[20];
+	std::cout << "string to write: " << str << std::endl;
 	bzero(buf, sizeof(buf));
 	int nbyte;
 	for(nbyte = 0; nbyte == 19 || nbyte == str.size() - 1; nbyte++){
 		buf[nbyte] = str[nbyte];
 	}
 	//DLOG(INFO) << "Write " << buf <<  " to socket";
-	std::cout << "Write " << buf <<  " to socket" << std::endl;
+	std::cout << "buf=" << buf <<  " nbyte=" << nbyte << std::endl;
 	write(sockfd, buf, nbyte);
 	std::cout << "write returned" << std::endl;
 	//DLOG(INFO) << "Read from socket";
