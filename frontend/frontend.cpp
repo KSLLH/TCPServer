@@ -82,7 +82,7 @@ int CallCalcService(const int& sockfd, const std::string& str){
 
 int TCPConnection(const std::string& address, const int& port){
 	int sockfd;
-	if((sockfd = = socket(AF_INET, SOCK_STREAM, 0)) < 0){
+	if((sockfd = socket(AF_INET, SOCK_STREAM, 0)) < 0){
 		std::cout << "socket error: " << strerror(errno) << std::endl;
 		abort();
 	}
