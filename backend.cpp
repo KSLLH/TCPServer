@@ -32,7 +32,6 @@ inline void Daemonize(){
 
 
 DEFINE_bool(daemon, false, "True if run as a daemon process.");
-DEFINE_string(log_dir, ".", "Log directory");
 
 
 int main(int argc, char* argv[]){
