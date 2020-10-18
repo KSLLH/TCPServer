@@ -35,8 +35,8 @@ DEFINE_bool(daemon, false, "True if run as a daemon process.");
 
 
 int main(int argc, char* argv[]){
-	DLOG(INFO) << "Initialize glags and glog.";
 	InitGoogle(&argc, & argv);	
+	DLOG(INFO) << "Initialize glags and glog.";
 
 	// Handle signal
 	DLOG(INFO) << "Handle signals.";
