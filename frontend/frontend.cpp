@@ -62,24 +62,6 @@ inline void Daemonize(){
 }
 
 int Task(const std::string& address, const int& port, const std::string& str){
-	int sockfd;
-	if((sockfd = socket(AF_INET, SOCK_STREAM, 0)) < 0){
-		std::cout << "socket error: " << strerror(errno) << std::endl;
-		abort();
-	}
-
-	struct sockaddr_in sock_addr;
-	bzero(&sock_addr, sizeof(sock_addr));
-	sock_addr.sin_family = AF_INET;
-	if(inet_pton(AF_INET, address.c_str(), &sock_addr.sin_addr) <= 0){
-		std::cout << "inet_pton error: " << strerror(errno);
-		abort();
-	}
-	
-	if(connect(sockfd, (struct sockaddr*)&sock_addr, sizeof(sock_addr)) < 0){
-		std::cout << "connect error: " << strerror(errno);
-		abort();
-	}
 	
 	return 10;//CallCalcService(sockfd, str);
 }
