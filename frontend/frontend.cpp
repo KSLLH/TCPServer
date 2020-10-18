@@ -7,11 +7,11 @@
 #include <string.h>
 #include <errno.h>
 
-#include <gflags/gflags.h>
-#include <glog/logging.h>
-
 #include <iostream>
 #include <string>
+
+#include <gflags/gflags.h>
+#include <glog/logging.h>
 
 #include "util/init_google.h"
 #include "util/thread_pool.h"
@@ -28,20 +28,8 @@ int CallCalcService(const int& sockfd, const std::string& str);
 
 
 int main(int argc, char* argv[]){
-	std::cout << "Initialize google" << std::endl;
-	InitGoogle(&argc, &argv);	
-	//DLOG(INFO) << "glags and glog Initialized";
-
-	//DLOG(INFO) << "Create thread pool";
-	std::cout << "Create thread pool" << std::endl;
-	ThreadPool thread_pool(FLAGS_thread_size);
-	//for(;;){
-	//	thread_pool.enqueue(Task, FLAGS_address, FLAGS_port, "test text")
-	//}
-
-	//DLOG(INFO) << "Start Task";
-	std::cout << Task(FLAGS_address, FLAGS_port, "test text") << std::endl;
-	//DLOG(INFO) << "Task Done";
+	DLOG(INFO) << "TEST TEXT1";
+	DLOG(INFO) << "TEST TEXT2";
 	return 0;
 }
 
