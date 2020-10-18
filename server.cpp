@@ -27,7 +27,7 @@ void Server::Run(){
 	int epfd = epoll_create(SIZE);
 
 	DLOG(INFO) << "Handle accept";
-	std::thread acceptor(Server::AcceptHandler, *this, epfd);
+	std::thread acceptor(Server::AcceptHandler, epfd);
 
 	DLOG(INFO) << "Handle vent";
 	EventHandler(epfd);
@@ -41,7 +41,7 @@ void Server::CreateSocket(){
 	}
 }
 
-void Server::Bind(const string& address, const int port){
+void Server::Bind(const std::string& address, const int port){
 	struct sockaddr_in sock_addr;
 	bzero(&sock_addr, sizeof(sock_addr));
 	sock_addr.sin_family = AF_INET;
