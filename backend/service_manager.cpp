@@ -6,7 +6,7 @@
 
 DEFINE_string(address, "", "IP address of server");
 DEFINE_int32(port, 2222, "Port number the server listens on");
-DEFINE_int32(thread_size, 100, "Size of thread pool");
+DEFINE_int32(thread_size, 1, "Size of thread pool");
 
 ServiceManager& ServiceManager::GetInstance(){
 	static ServiceManager instance;
