@@ -27,7 +27,7 @@ void Server::Run(){
 	int epfd = epoll_create(SIZE);
 
 	DLOG(INFO) << "Handle accept";
-	std::thread acceptor(std::bind(Server::AcceptHandler, this, epfd));
+	std::thread acceptor(std::bind(&Server::AcceptHandler, this, epfd));
 
 	DLOG(INFO) << "Handle vent";
 	EventHandler(epfd);
@@ -41,7 +41,7 @@ void Server::CreateSocket(){
 	}
 }
 
-void Server::Bind(const std::string& address, const int port){
+void Server::Bind(const std::string& address, const int& port){
 	struct sockaddr_in sock_addr;
 	bzero(&sock_addr, sizeof(sock_addr));
 	sock_addr.sin_family = AF_INET;
@@ -87,13 +87,13 @@ void Server::EventHandler(const int& epfd){
 	while(true){
 		epoll_wait(epfd, events, MAXEVENTS, TIMEOUT);
 		for(auto& ev : events){
-			thread_pool_.enqueue(Server::CalcService, this, ev.data.fd);
+			thread_pool_.enqueue(std::bind(&Server::CalcService, this, ev.data.fd));
 		}
 	}
 }
 
 void Server::CalcService(const int& fd){
-	const BUFSIZE {20};
+	const int BUFSIZE {20};
 	char buf[BUFSIZE];
 	int len {0};
 	while((len = read(fd, buf, BUFSIZE)) > 0);

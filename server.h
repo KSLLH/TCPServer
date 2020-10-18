@@ -18,7 +18,7 @@ public:
 private:
 	void CreateSocket();
 
-	void Bind(const std::string& address, const int port);
+	void Bind(const std::string& address, const int& port);
 
 	void Listen();
 
