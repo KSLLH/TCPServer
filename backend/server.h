@@ -11,7 +11,8 @@ class Server{
 public:
 	Server(const std::string& address, 
 		const int& port,
-		const int& thread_pool_size);
+		const int& thread_size,
+		const int& maxmsg);
 	
 	void Run();
 
@@ -35,6 +36,7 @@ private:
 	static const int TIMEOUT {10};
 
 	int listenfd;
+	int mms;
 	struct epoll_event events[MAXEVENTS];
 	ThreadPool thread_pool_;
 

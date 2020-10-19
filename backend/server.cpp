@@ -11,8 +11,9 @@
 
 Server::Server(const std::string& address, 
 	const int& port,
-	const int& thread_pool_size):
-	thread_pool_(thread_pool_size){
+	const int& thread_size,
+	const int& maxmsg):mms{maxmsg},
+	thread_pool_(thread_size){
 	DLOG(INFO) << "Create socket";
 	CreateSocket();
 	
@@ -94,14 +95,15 @@ void Server::EventHandler(const int& epfd){
 }
 
 void Server::CalcService(const int& fd){
-	const int BUFSIZE {20};
-	char buf[BUFSIZE];
+	char* buf = new char[mms];
 	union u{
 		int num;
 		char str[sizeof(int)];
 	} len;
-	len.num = read(fd, buf, BUFSIZE);
+	len.num = read(fd, buf, mms);
 	write(fd, len.str, sizeof(int));
+	delete buf;
+	buf = nullptr;
 	close(fd);
 }
 

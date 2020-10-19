@@ -19,7 +19,7 @@ private:
 
 	int TCPConnection(const std::string& addr, const int& port);
 	
-	std::string GenerateMsg(const int& maxmsg);
+	std::string GenerateMsg();
 
 	void CallCalcService(const int& fd, const std::string& str);
 
