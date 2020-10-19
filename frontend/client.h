@@ -10,7 +10,8 @@ public:
 	Client(const std::string& addr, 
 		const int& port,
 		const int& thread_size,
-		const int& maxmsg);
+		const int& maxmsg,
+		const int& interval);
 	
 	void Run();
 
@@ -26,6 +27,7 @@ private:
 private:
 	int mms;
 	int port;
+	int task_interval;
 	std::string address;
 	ThreadPool thread_pool_;
 };

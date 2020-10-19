@@ -31,7 +31,7 @@ private:
 
 private:
 	static const int SIZE {1000};
-	static const int LISTENQ {50};
+	static const int LISTENQ {200};
 	static const int MAXEVENTS {1000};
 	static const int TIMEOUT {10};
 

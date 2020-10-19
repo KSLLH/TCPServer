@@ -18,28 +18,35 @@
 Client::Client(const std::string & addr, 
 	const int& port, 
 	const int& thread_size,
-	const int& maxmsg):address{addr},port{port},thread_pool_(thread_size),mms{maxmsg}{
-	DLOG(INFO) << "Client Instantiated.";
+	const int& maxmsg,
+	const int& interval):
+		address{addr},
+		port{port},
+		thread_pool_(thread_size),
+		mms{maxmsg},
+		task_interval{interval}{
+	DLOG(INFO) << "Instantiatin client...";
 }
 
 
 void Client::Run(){
 	for(;;){
+		DLOG(INFO) << "New Task Start:";
 		thread_pool_.enqueue(std::bind(&Client::Task, 
 			this, address, port));
-		std::this_thread::sleep_for(std::chrono::milliseconds(1000));
-		DLOG(INFO) << "Task enqueued.";
+		std::this_thread::sleep_for(std::chrono::milliseconds(task_interval));
+		DLOG(INFO) << "Task done.";
 	}
 }
 
 void Client::Task(const std::string& address, const int& port){
-	DLOG(INFO) << "Start TCP connection";
+	DLOG(INFO) << "Start New TCP Connection:";
 	int sockfd = TCPConnection(address, port);
-	DLOG(INFO) << "Connected.";
+	DLOG(INFO) << "New TCP connected.";
 	std::string str = GenerateMsg(); 
-	DLOG(INFO) << "Generated message: " << str;
+	DLOG(INFO) << "Message:  " << str << " generated.";
 	CallCalcService(sockfd, str);
-	DLOG(INFO) << "Service called.";
+	DLOG(INFO) << "Service returned for message=" << str << ".";
 }
 
 int Client::TCPConnection(const std::string& address, const int& port){
@@ -48,6 +55,7 @@ int Client::TCPConnection(const std::string& address, const int& port){
 		DLOG(INFO) << "socket error: " << strerror(errno);
 		abort();
 	}
+	DLOG(INFO) << "Socket created.";
 	struct sockaddr_in sock_addr;
 	bzero(&sock_addr, sizeof(sock_addr));
 	sock_addr.sin_family = AF_INET;
@@ -58,11 +66,13 @@ int Client::TCPConnection(const std::string& address, const int& port){
 		DLOG(INFO) << "inet_pton error: " << strerror(errno);
 		abort();
 	}
+	DLOG(INFO) << "Server socket address obtained.";
 
 	if( connect(sockfd, (struct sockaddr*)&sock_addr, sizeof(sock_addr)) < 0){
 		DLOG(INFO) << "connect error: " << strerror(errno);
 		abort();
 	}
+	DLOG(INFO) << "Connected to server.";
 	return sockfd;
 }
 
@@ -71,26 +81,28 @@ void Client::CallCalcService(const int& sockfd, const std::string& str){
 	for(int j = 0; j < str.size(); j++){
 		buf[j] = str[j];
 	}
-	DLOG(INFO) << "Message written into buffer.";
+	DLOG(INFO) << "Message " << str << " written into buffer.";
 
-	write(sockfd, buf, str.size());
-	DLOG(INFO) << "Message written into socket.";
+	
+	DLOG(INFO) << write(sockfd, buf, str.size()) << " bytes written into socket.";
 
 	union u{
 		int num;
 		char str[sizeof(int)];
 	} response;
 	read(sockfd, response.str, sizeof(int));
-	DLOG(INFO) << "Response Read.";
+	DLOG(INFO) << "Answer=" << response.num << " responsed.";
 
 	delete buf;
 	buf = nullptr;
 
 	if(str.size() != response.num){
-		DLOG(INFO) << "Wrong answer. Expect output=" 
+		DLOG(WARNING) << "Wrong answer. Expect output=" 
 				   << str.size() << ", actual output=" 
 				   << response.num;
-		abort();
+	}
+	else{
+		DLOG(INFO) << "Answer correct, well done.";
 	}
 }
 

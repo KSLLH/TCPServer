@@ -86,10 +86,11 @@ void Server::Listen(){
 
 void Server::EventHandler(const int& epfd){	
 	while(true){
-		epoll_wait(epfd, events, MAXEVENTS, TIMEOUT);
-		for(auto& ev : events){
-			int sockfd = ev.data.fd;
-			thread_pool_.enqueue(std::bind(&Server::CalcService, this, sockfd));
+		int nfd = epoll_wait(epfd, events, MAXEVENTS, TIMEOUT);
+		for(int j = 0; j < nfd; j++){
+			int connfd = events[j].data.fd;
+			epoll_ctl(epfd, EPOLL_CTL_DEL, connfd, events+j);
+			thread_pool_.enqueue(std::bind(&Server::CalcService, this, connfd));
 		}
 	}
 }

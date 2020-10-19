@@ -22,9 +22,15 @@ DEFINE_int32(port, 2222, "port of serever");
 DEFINE_int32(workers, 1, "Number of processes");
 DEFINE_int32(thread_size, 2, "Number of threads per process");
 DEFINE_int32(maxmsg, 20, "Maximum length of a message");
+DEFINE_int32(interval, 1000, "Time interval of subsequent tasks in the same thread");
 
 int main(int argc, char* argv[]){
 	InitGoogle(&argc, &argv);
+
+	DLOG(INFO) << "################";
+	DLOG(INFO) << "# PROGRAM START";
+	DLOG(INFO) << "################";
+	
 	DLOG(INFO) << "Google Initialized.";
 
 	pid_t ppid = getpid();
@@ -34,11 +40,10 @@ int main(int argc, char* argv[]){
 	    }
 	}
 
-	DLOG(INFO) << "Instantiate client";
-	Client client(FLAGS_address, FLAGS_port, FLAGS_thread_size, FLAGS_maxmsg);
+	Client client(FLAGS_address, FLAGS_port, FLAGS_thread_size, FLAGS_maxmsg, FLAGS_interval);
+	DLOG(INFO) << "Instantiate client.";
 	
-	DLOG(INFO) << "Start client";
 	client.Run();
-	DLOG(INFO) << "frontend returned.";
+	DLOG(INFO) << "Process Start:";
 	return 0;
 }
