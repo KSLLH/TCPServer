@@ -8,19 +8,18 @@
 class Client{
 public:
 	Client(const std::string& addr, 
-		const int& p,
+		const int& port,
 		const int& thread_size,
 		const int& maxmsg);
 	
 	void Run();
 
 private:
-	void Task(const std::string& address, 
-		const int& port);
+	void Task(const std::string& addr, const int& port);
 
-	int CreateSocket();
-
-	void Connect(const int& sockfd);
+	int TCPConnection(const std::string& addr, const int& port);
+	
+	std::string GenerateMsg(const int& maxmsg);
 
 	void CallCalcService(const int& fd, const std::string& str);
 
