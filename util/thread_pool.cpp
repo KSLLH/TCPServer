@@ -29,14 +29,18 @@ void ThreadPool::DoTask(){
 }
 
 template<class F, class... Args> auto PushTask(F&& f, Args&&... args)
-	-> std::result_of<F(Args...)>::type{
+	-> std::future<typename std::result_of<F(Args...)>::type>{
 	using ReturnType = typename std::result_of<F(Args...)>::type;
-	auto task = std::shared_ptr<std::packaged_task<ReturnType>> {
+	auto task = std::shared_ptr<std::packaged_task<ReturnType()>> {
 			std::bind(std::forward<F>(f), std::forward<Args...>(agrs))};
-	std::unique_lock<std::mutex> lock {queue_mutex};
-	auto res = task->get_future();
-	if(stop_){
-		throw std::runtime_error("Push task into a stopped thread pool");	
+	{
+		std::unique_lock<std::mutex> lock {queue_mutex};
+		auto res = task->get_future();
+		if(stop_){
+			throw std::runtime_error("Push task into a stopped thread pool");	
+		}
+		task_que.emplace([task](){(*task)();});
 	}
-	task_que.emplace(task.get())
+	cond.notify_all();
+	return res;
 }
